@@ -4,6 +4,12 @@
 -- Project Site: pgmodeler.com.br
 -- Model Author: ---
 
+-- object: climber | type: ROLE --
+-- DROP ROLE IF EXISTS climber;
+CREATE ROLE climber WITH 
+	CREATEDB;
+-- ddl-end --
+
 
 -- Database creation must be done outside an multicommand file.
 -- These commands were put in this file only for convenience.
@@ -18,11 +24,12 @@
 -- DROP TABLE IF EXISTS public.centre CASCADE;
 CREATE TABLE public.centre(
 	centre_id serial NOT NULL,
+	name varchar(64) NOT NULL,
 	CONSTRAINT centre_pk PRIMARY KEY (centre_id)
 
 );
 -- ddl-end --
-ALTER TABLE public.centre OWNER TO postgres;
+ALTER TABLE public.centre OWNER TO climber;
 -- ddl-end --
 
 -- object: public.room | type: TABLE --
@@ -30,11 +37,12 @@ ALTER TABLE public.centre OWNER TO postgres;
 CREATE TABLE public.room(
 	room_id serial NOT NULL,
 	centre_id integer NOT NULL,
+	name varchar(64),
 	CONSTRAINT room_fk PRIMARY KEY (room_id)
 
 );
 -- ddl-end --
-ALTER TABLE public.room OWNER TO postgres;
+ALTER TABLE public.room OWNER TO climber;
 -- ddl-end --
 
 -- object: public.wall | type: TABLE --
@@ -46,13 +54,17 @@ CREATE TABLE public.wall(
 	width integer,
 	height_min integer,
 	height_max smallint,
+	z_min integer,
+	z_max smallint,
 	left_wall_id integer,
 	right_wall_id integer,
+	description varchar(512),
+	name varchar(32),
 	CONSTRAINT wall_pk PRIMARY KEY (wall_id)
 
 );
 -- ddl-end --
-ALTER TABLE public.wall OWNER TO postgres;
+ALTER TABLE public.wall OWNER TO climber;
 -- ddl-end --
 
 -- object: public.mark | type: TABLE --
@@ -67,7 +79,7 @@ CREATE TABLE public.mark(
 
 );
 -- ddl-end --
-ALTER TABLE public.mark OWNER TO postgres;
+ALTER TABLE public.mark OWNER TO climber;
 -- ddl-end --
 
 -- object: public.route | type: TABLE --
@@ -81,11 +93,12 @@ CREATE TABLE public.route(
 	colour char(7) NOT NULL,
 	installation_date date NOT NULL,
 	active boolean NOT NULL,
+	natural_feature_rule_id smallint NOT NULL,
 	CONSTRAINT route_pk PRIMARY KEY (route_id)
 
 );
 -- ddl-end --
-ALTER TABLE public.route OWNER TO postgres;
+ALTER TABLE public.route OWNER TO climber;
 -- ddl-end --
 
 -- object: public.hold | type: TABLE --
@@ -101,13 +114,13 @@ CREATE TABLE public.hold(
 
 );
 -- ddl-end --
-ALTER TABLE public.hold OWNER TO postgres;
+ALTER TABLE public.hold OWNER TO climber;
 -- ddl-end --
 
 -- object: public.move | type: TABLE --
 -- DROP TABLE IF EXISTS public.move CASCADE;
 CREATE TABLE public.move(
-	limb_hold_id serial NOT NULL,
+	move_id serial NOT NULL,
 	route_ascent_id integer NOT NULL,
 	route_hold_id integer,
 	natural_feature_id integer,
@@ -118,7 +131,7 @@ CREATE TABLE public.move(
 
 );
 -- ddl-end --
-ALTER TABLE public.move OWNER TO postgres;
+ALTER TABLE public.move OWNER TO climber;
 -- ddl-end --
 
 -- object: public.hold_type | type: TABLE --
@@ -131,7 +144,7 @@ CREATE TABLE public.hold_type(
 
 );
 -- ddl-end --
-ALTER TABLE public.hold_type OWNER TO postgres;
+ALTER TABLE public.hold_type OWNER TO climber;
 -- ddl-end --
 
 -- object: public.route_ascent | type: TABLE --
@@ -144,7 +157,7 @@ CREATE TABLE public.route_ascent(
 
 );
 -- ddl-end --
-ALTER TABLE public.route_ascent OWNER TO postgres;
+ALTER TABLE public.route_ascent OWNER TO climber;
 -- ddl-end --
 
 -- object: public.climber | type: TABLE --
@@ -157,7 +170,7 @@ CREATE TABLE public.climber(
 
 );
 -- ddl-end --
-ALTER TABLE public.climber OWNER TO postgres;
+ALTER TABLE public.climber OWNER TO climber;
 -- ddl-end --
 
 -- object: public.route_grade | type: TABLE --
@@ -169,7 +182,7 @@ CREATE TABLE public.route_grade(
 
 );
 -- ddl-end --
-ALTER TABLE public.route_grade OWNER TO postgres;
+ALTER TABLE public.route_grade OWNER TO climber;
 -- ddl-end --
 
 -- object: public.natural_feature | type: TABLE --
@@ -184,7 +197,7 @@ CREATE TABLE public.natural_feature(
 
 );
 -- ddl-end --
-ALTER TABLE public.natural_feature OWNER TO postgres;
+ALTER TABLE public.natural_feature OWNER TO climber;
 -- ddl-end --
 
 -- object: public.screw_thread | type: TABLE --
@@ -199,7 +212,7 @@ CREATE TABLE public.screw_thread(
 
 );
 -- ddl-end --
-ALTER TABLE public.screw_thread OWNER TO postgres;
+ALTER TABLE public.screw_thread OWNER TO climber;
 -- ddl-end --
 
 -- object: public.route_hold | type: TABLE --
@@ -215,7 +228,7 @@ CREATE TABLE public.route_hold(
 
 );
 -- ddl-end --
-ALTER TABLE public.route_hold OWNER TO postgres;
+ALTER TABLE public.route_hold OWNER TO climber;
 -- ddl-end --
 
 -- object: public.smear | type: TABLE --
@@ -227,7 +240,7 @@ CREATE TABLE public.smear(
 
 );
 -- ddl-end --
-ALTER TABLE public.smear OWNER TO postgres;
+ALTER TABLE public.smear OWNER TO climber;
 -- ddl-end --
 
 -- object: public.style | type: TABLE --
@@ -239,7 +252,19 @@ CREATE TABLE public.style(
 
 );
 -- ddl-end --
-ALTER TABLE public.style OWNER TO postgres;
+ALTER TABLE public.style OWNER TO climber;
+-- ddl-end --
+
+-- object: public.natural_feature_rule | type: TABLE --
+-- DROP TABLE IF EXISTS public.natural_feature_rule CASCADE;
+CREATE TABLE public.natural_feature_rule(
+	natural_feature_rule_id smallint NOT NULL,
+	type varchar(16) NOT NULL,
+	CONSTRAINT natural_feature_rule_pk PRIMARY KEY (natural_feature_rule_id)
+
+);
+-- ddl-end --
+ALTER TABLE public.natural_feature_rule OWNER TO climber;
 -- ddl-end --
 
 -- object: room_centre_fk | type: CONSTRAINT --
@@ -295,6 +320,13 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ALTER TABLE public.route DROP CONSTRAINT IF EXISTS route_setter_fk CASCADE;
 ALTER TABLE public.route ADD CONSTRAINT route_setter_fk FOREIGN KEY (setter_id)
 REFERENCES public.climber (climber_id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: route_rule_fk | type: CONSTRAINT --
+-- ALTER TABLE public.route DROP CONSTRAINT IF EXISTS route_rule_fk CASCADE;
+ALTER TABLE public.route ADD CONSTRAINT route_rule_fk FOREIGN KEY (natural_feature_rule_id)
+REFERENCES public.natural_feature_rule (natural_feature_rule_id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 

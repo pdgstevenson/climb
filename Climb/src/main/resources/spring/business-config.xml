@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Repository and Service layers
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:p="http://www.springframework.org/schema/p"
+       	xmlns:context="http://www.springframework.org/schema/context" 
+       	xmlns:tx="http://www.springframework.org/schema/tx"
+       	xmlns:jpa="http://www.springframework.org/schema/data/jpa" 
+       	xmlns:mvc="http://www.springframework.org/schema/mvc"
+       	xmlns="http://www.springframework.org/schema/beans"
+       	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+    <!-- import the dataSource definition -->
+    <import resource="datasource-config.xml"/>
+
+    <context:component-scan base-package="uk.co.tatari.climb.service"/>
+	<context:component-scan base-package="uk.co.tatari.climb.repository"/>
+    <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+    <!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
+    <context:property-placeholder location="classpath:spring/data-access.properties" system-properties-mode="OVERRIDE"/>
+	<!-- enables scanning for @Transactional annotations -->
+    <tx:annotation-driven/>
+
+	<jpa:repositories base-package="uk.co.tatari.climb..repository"/>
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" p:dataSource-ref="dataSource">
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:database="${jpa.database}" p:showSql="${jpa.showSql}" p:databasePlatform="org.hibernate.dialect.PostgreSQLDialect"/>
+            </property>
+            <!-- gDickens: BOTH Persistence Unit and Packages to Scan are NOT compatible, persistenceUnit will win 
+            <property name="persistenceUnitName" value="sparrow"/>-->
+            <property name="packagesToScan" value="uk.co.tatari.climb."/>
+        </bean>
+
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" p:entityManagerFactory-ref="entityManagerFactory"/>
+        <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	
+	
+		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"/>
+		<!-- 
+    		<mvc:view-resolvers>
+        	<mvc:content-negotiation>
+            <mvc:default-views>
+                <bean class="uk.ac.glasgow.gpol.samvar.web.ExcelReportsReadyView"/>
+
+            </mvc:default-views>
+        </mvc:content-negotiation>
+        <mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+    </mvc:view-resolvers> -->
+
+
+</beans>
