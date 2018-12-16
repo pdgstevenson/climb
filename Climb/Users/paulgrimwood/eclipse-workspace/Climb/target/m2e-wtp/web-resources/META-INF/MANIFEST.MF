@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: Climb
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: paulgrimwood
+Implementation-Vendor-Id: uk.co.tatari.climb
+Build-Jdk: 1.8.0_131
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/Climb
+Created-By: Maven Integration for Eclipse
+
