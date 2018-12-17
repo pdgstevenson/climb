@@ -6,8 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.slf4j.Logger;
@@ -27,16 +30,38 @@ public class Wall implements java.io.Serializable {
 	@SequenceGenerator(name="wall_wall_id_seq", sequenceName="wall_wall_id_seq", allocationSize=1)
 	private Integer wallId;
 	
-
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "room_id")	
+	private Room room;
+	
+    @Column(name = "num", columnDefinition = "smallint")
+	private Integer num;  
+	
+	@Size(min = 0, max = 32)
+    @Column(name = "orientation", columnDefinition = "text")
+	private String orientation;  
+	
+	@Size(min = 1, max = 64)
+    @Column(name = "name", columnDefinition = "text")
+	private String name;  
+	
 	@Size(min = 1, max = 512)
     @Column(name = "description", columnDefinition = "text")
 	private String description;  
 
-    @Column(name = "width", columnDefinition = "int")
-	private Integer width;  
+    @Column(name = "width_base", columnDefinition = "int")
+	private Integer widthBase;  
     
 	public Wall() {
 		super();
+	}
+
+	public Wall(Room room, Integer num, String orientation) {
+		super();
+		this.room = room;
+		this.num = num;
+		this.orientation = orientation;
 	}
 
 	public Integer getWallId() {
@@ -47,6 +72,38 @@ public class Wall implements java.io.Serializable {
 		this.wallId = wallId;
 	}
 
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+
+	public String getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(String orientation) {
+		this.orientation = orientation;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -55,12 +112,13 @@ public class Wall implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Integer getWidth() {
-		return width;
+
+	public Integer getWidthBase() {
+		return widthBase;
 	}
 
-	public void setWidth(Integer width) {
-		this.width = width;
+	public void setWidthBase(Integer widthBase) {
+		this.widthBase = widthBase;
 	}
 
 	@Override

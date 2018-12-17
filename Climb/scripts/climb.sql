@@ -25,7 +25,8 @@ CREATE ROLE climber WITH
 CREATE TABLE public.centre(
 	centre_id serial NOT NULL,
 	name varchar(64) NOT NULL,
-	CONSTRAINT centre_pk PRIMARY KEY (centre_id)
+	CONSTRAINT centre_pk PRIMARY KEY (centre_id),
+	CONSTRAINT centre_name_unq UNIQUE (name)
 
 );
 -- ddl-end --
@@ -37,8 +38,9 @@ ALTER TABLE public.centre OWNER TO climber;
 CREATE TABLE public.room(
 	room_id serial NOT NULL,
 	centre_id integer NOT NULL,
-	name varchar(64),
-	CONSTRAINT room_fk PRIMARY KEY (room_id)
+	name varchar(64) NOT NULL,
+	CONSTRAINT room_fk PRIMARY KEY (room_id),
+	CONSTRAINT name_unq_cons UNIQUE (name)
 
 );
 -- ddl-end --
@@ -50,16 +52,16 @@ ALTER TABLE public.room OWNER TO climber;
 CREATE TABLE public.wall(
 	wall_id serial NOT NULL,
 	room_id integer NOT NULL,
+	num smallint NOT NULL,
 	orientation varchar(32) NOT NULL,
-	width integer,
-	height_min integer,
-	height_max smallint,
-	z_min integer,
-	z_max smallint,
-	left_wall_id integer,
-	right_wall_id integer,
-	description varchar(512),
 	name varchar(32),
+	description varchar(512),
+	width_base integer,
+	width_top integer,
+	height_left integer,
+	height_right integer,
+	z_left integer,
+	z_right integer,
 	CONSTRAINT wall_pk PRIMARY KEY (wall_id)
 
 );
@@ -278,20 +280,6 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ALTER TABLE public.wall DROP CONSTRAINT IF EXISTS wall_room_fk CASCADE;
 ALTER TABLE public.wall ADD CONSTRAINT wall_room_fk FOREIGN KEY (room_id)
 REFERENCES public.room (room_id) MATCH FULL
-ON DELETE NO ACTION ON UPDATE NO ACTION;
--- ddl-end --
-
--- object: right_wall_fk | type: CONSTRAINT --
--- ALTER TABLE public.wall DROP CONSTRAINT IF EXISTS right_wall_fk CASCADE;
-ALTER TABLE public.wall ADD CONSTRAINT right_wall_fk FOREIGN KEY (right_wall_id)
-REFERENCES public.wall (wall_id) MATCH FULL
-ON DELETE NO ACTION ON UPDATE NO ACTION;
--- ddl-end --
-
--- object: left_wall_fk | type: CONSTRAINT --
--- ALTER TABLE public.wall DROP CONSTRAINT IF EXISTS left_wall_fk CASCADE;
-ALTER TABLE public.wall ADD CONSTRAINT left_wall_fk FOREIGN KEY (left_wall_id)
-REFERENCES public.wall (wall_id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 

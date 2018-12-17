@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>	
+	<centre centre_id="1" name="Glasgow Climbing Centre" />
+	<room room_id="1" centre_id="1" name="The Blue Room" />
+	<wall wall_id="1" room_id="1" num="1" orientation="left-facing-left"/>
+	<wall wall_id="2" room_id="1" num="2" orientation="rear-facing-front"/>
+	<wall wall_id="3" room_id="1" num="3" orientation="right-facing-left"/>
+	<wall wall_id="4" room_id="1" num="4" orientation="rear-facing-front"/>
+</dataset> 
+

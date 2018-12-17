@@ -18,10 +18,7 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 
-import uk.ac.tatari.climb.test.SequenceResetDbUtil;
 import uk.co.tatari.climb.domain.Centre;
 import uk.co.tatari.climb.domain.Room;
 
@@ -29,51 +26,40 @@ import uk.co.tatari.climb.domain.Room;
 @ContextConfiguration(locations = {"classpath:spring/business-config.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,DbUnitTestExecutionListener.class, TransactionDbUnitTestExecutionListener.class})
-public class CentreRepositoryTests extends SequenceResetDbUtil {
-    
+public class RoomRepositoryTests {
+
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();    
-    @Autowired protected CentreRepository centreRepository;
-    
-    @Test(expected=LazyInitializationException.class)
-    @DatabaseSetup(value="repositoryTestsDataSetup.xml",type=DatabaseOperation.CLEAN_INSERT)    
-	public void testFindOneFailOnRooms() {
-    		
-    		Centre centre = centreRepository.findOne(1);
-    		assertEquals(1, centre.getCentreId().intValue()); 
-    		assertEquals("Glasgow Climbing Centre", centre.getName()); 
-    		assertEquals(1, centre.getRooms().size()); 
-    }  
+    @Autowired protected RoomRepository roomRepository;
+
     
     @Test(expected=LazyInitializationException.class)
     @DatabaseSetup(value="repositoryTestsDataSetup.xml",type=DatabaseOperation.CLEAN_INSERT)    
 	public void testFindOneFailOnWalls() {
     		
-    		Centre centre = centreRepository.findOne(1);
-    		assertEquals(1, centre.getCentreId().intValue()); 
-    		assertEquals("Glasgow Climbing Centre", centre.getName()); 
-    		assertEquals(1, centre.getRooms().size()); 
-    		Room blueRoom = (Room) centre.getRooms().toArray()[0];
+    		Room blueRoom = roomRepository.findOne(1);
     		assertEquals(1, blueRoom.getWalls().size()); 
     }  
     
     @Test
     @DatabaseSetup(value="repositoryTestsDataSetup.xml",type=DatabaseOperation.CLEAN_INSERT)    
-	public void testFindByCentreId() {
+	public void testFindByRoomId() {
     		
-    		Centre centre = centreRepository.findByCentreId(1);
-    		assertEquals(1, centre.getCentreId().intValue()); 
-    		assertEquals("Glasgow Climbing Centre", centre.getName()); 
-    		assertEquals(1, centre.getRooms().size()); 
+    		Room blueRoom = roomRepository.findByRoomId(1);
+    		assertEquals("The Blue Room", blueRoom.getName()); 
+    		assertEquals(4, blueRoom.getWalls().size()); 
     } 
     
+    /*
     @Test
-    @DatabaseSetup(value="repositoryTestsDataSetup.xml",type=DatabaseOperation.CLEAN_INSERT)
-    @ExpectedDatabase(value="newCentre.xml",assertionMode=DatabaseAssertionMode.NON_STRICT)    
+    @DatabaseSetup(value="repositoryTestsDataSetup.xml",type=DatabaseOperation.CLEAN_INSERT)    
 	public void testSave() {
     		
-    		Centre centre = new Centre("Glasgow Climbing Academy");
+    		Centre centre = new Centre("Glasgow Climbing Centre");
+    		centreRepository.save(centre);   
+    		
+    		centre.addRoom(new Room(centre, "Blue Room"));
     		centreRepository.save(centre); 
-    }
-
+    }*/
+ 
 }

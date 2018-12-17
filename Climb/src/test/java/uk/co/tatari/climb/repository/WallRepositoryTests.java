@@ -25,7 +25,7 @@ public class WallRepositoryTests {
     		
     		Wall wall = new Wall();
     		wall.setDescription("Beginner wall, with approximate uniform 80 degree angle.");
-    		wall.setWidth(830);
+    		wall.setWidthBase(830);
     		wallRepository.save(wall);
     		
     }
