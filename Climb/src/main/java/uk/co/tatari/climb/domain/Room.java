@@ -118,4 +118,8 @@ public class Room implements java.io.Serializable {
 		return true;
 	}
 
+	public void addWall(Wall wall) {
+		
+		walls.add(wall);
+	}
 }

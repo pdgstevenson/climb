@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>	
-	<centre centre_id="1" name="Glasgow Climbing Centre" />
+	<centre centre_id="1" name="Climbtastic" />
 	<centre centre_id="2" name="Glasgow Climbing Academy" />
 	
 	<room room_id="1" centre_id="1" name="The Blue Room" />
+	<room room_id="2" centre_id="1" name="Main Room" />
+	<room room_id="3" centre_id="2" name="The Crazy Room" />
+	
 	<wall wall_id="1" room_id="1" num="1" orientation="left-facing-left"/>
 	<wall wall_id="2" room_id="1" num="2" orientation="rear-facing-front"/>
 	<wall wall_id="3" room_id="1" num="3" orientation="right-facing-left"/>
 	<wall wall_id="4" room_id="1" num="4" orientation="rear-facing-front"/>
+	<wall wall_id="5" room_id="2" num="7" orientation="left-facing-right"/>
 </dataset> 
 

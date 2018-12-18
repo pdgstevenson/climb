@@ -41,7 +41,7 @@ public class CentreRepositoryTests extends SequenceResetDbUtil {
     		
     		Centre centre = centreRepository.findOne(1);
     		assertEquals(1, centre.getCentreId().intValue()); 
-    		assertEquals("Glasgow Climbing Centre", centre.getName()); 
+    		assertEquals("Climbtastic", centre.getName()); 
     		assertEquals(1, centre.getRooms().size()); 
     }  
     
@@ -51,7 +51,7 @@ public class CentreRepositoryTests extends SequenceResetDbUtil {
     		
     		Centre centre = centreRepository.findOne(1);
     		assertEquals(1, centre.getCentreId().intValue()); 
-    		assertEquals("Glasgow Climbing Centre", centre.getName()); 
+    		assertEquals("Climbtastic", centre.getName()); 
     		assertEquals(1, centre.getRooms().size()); 
     		Room blueRoom = (Room) centre.getRooms().toArray()[0];
     		assertEquals(1, blueRoom.getWalls().size()); 
@@ -63,8 +63,8 @@ public class CentreRepositoryTests extends SequenceResetDbUtil {
     		
     		Centre centre = centreRepository.findByCentreId(1);
     		assertEquals(1, centre.getCentreId().intValue()); 
-    		assertEquals("Glasgow Climbing Centre", centre.getName()); 
-    		assertEquals(1, centre.getRooms().size()); 
+    		assertEquals("Climbtastic", centre.getName()); 
+    		assertEquals(2, centre.getRooms().size()); 
     } 
     
     @Test
@@ -73,6 +73,7 @@ public class CentreRepositoryTests extends SequenceResetDbUtil {
 	public void testSave() {
     		
     		Centre centre = new Centre("Glasgow Climbing Academy");
+    		centre.addRoom(new Room(centre, "The Crazy Room"));
     		centreRepository.save(centre); 
     }
 

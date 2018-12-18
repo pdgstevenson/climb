@@ -12,7 +12,6 @@
 	<wall wall_id="5" room_id="2" num="8" orientation="left-facing-right" name="Arete Right" width_base="200" width_top="200" height_left="800" height_right="800" z_left="10" z_right="10"/>
 
 	<screw_thread screw_thread_id="1" wall_id="5" x="5" y="5" z="5" />
-	
-	<natural_feature natural_feature_id="1" wall_id="5" x="77" y="88" z="10" />
+	<screw_thread screw_thread_id="2" wall_id="5" x="5" y="10" z="0" />
 </dataset> 
 

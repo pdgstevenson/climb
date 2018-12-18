@@ -34,6 +34,9 @@ public class SequenceResetDbUtil  {
         		jdbcConnection = dataSource.getConnection();
 	        	Statement statement = jdbcConnection.createStatement();
 	        	statement.execute("ALTER SEQUENCE centre_centre_id_seq RESTART WITH 2;");
+	        	statement.execute("ALTER SEQUENCE room_room_id_seq RESTART WITH 3;");
+	        	statement.execute("ALTER SEQUENCE wall_wall_id_seq RESTART WITH 6;");
+	        	statement.execute("ALTER SEQUENCE screw_thread_screw_thread_id_seq RESTART WITH 2;");
 		} catch (SQLException e) {
 
 			e.printStackTrace();

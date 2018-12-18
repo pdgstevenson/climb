@@ -40,7 +40,7 @@ CREATE TABLE public.room(
 	centre_id integer NOT NULL,
 	name varchar(64) NOT NULL,
 	CONSTRAINT room_fk PRIMARY KEY (room_id),
-	CONSTRAINT name_unq_cons UNIQUE (name)
+	CONSTRAINT name_unq_cons UNIQUE (name,centre_id)
 
 );
 -- ddl-end --
@@ -269,6 +269,34 @@ CREATE TABLE public.natural_feature_rule(
 ALTER TABLE public.natural_feature_rule OWNER TO climber;
 -- ddl-end --
 
+-- object: public.climb_user | type: TABLE --
+-- DROP TABLE IF EXISTS public.climb_user CASCADE;
+CREATE TABLE public.climb_user(
+	climb_user_id serial NOT NULL,
+	initials varchar(3) NOT NULL,
+	password varchar(60) NOT NULL,
+	enabled boolean NOT NULL,
+	CONSTRAINT climb_user_pk PRIMARY KEY (climb_user_id),
+	CONSTRAINT username_unq UNIQUE (initials)
+
+);
+-- ddl-end --
+ALTER TABLE public.climb_user OWNER TO climber;
+-- ddl-end --
+
+-- object: public.st_authority | type: TABLE --
+-- DROP TABLE IF EXISTS public.st_authority CASCADE;
+CREATE TABLE public.st_authority(
+	st_authority_id serial NOT NULL,
+	role_name varchar(32) NOT NULL,
+	user_id integer NOT NULL,
+	CONSTRAINT st_authority_pk PRIMARY KEY (st_authority_id)
+
+);
+-- ddl-end --
+ALTER TABLE public.st_authority OWNER TO climber;
+-- ddl-end --
+
 -- object: room_centre_fk | type: CONSTRAINT --
 -- ALTER TABLE public.room DROP CONSTRAINT IF EXISTS room_centre_fk CASCADE;
 ALTER TABLE public.room ADD CONSTRAINT room_centre_fk FOREIGN KEY (centre_id)
@@ -413,6 +441,13 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ALTER TABLE public.route_hold DROP CONSTRAINT IF EXISTS route_hold_route_fk CASCADE;
 ALTER TABLE public.route_hold ADD CONSTRAINT route_hold_route_fk FOREIGN KEY (route_id)
 REFERENCES public.route (route_id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: user_authority_fk | type: CONSTRAINT --
+-- ALTER TABLE public.st_authority DROP CONSTRAINT IF EXISTS user_authority_fk CASCADE;
+ALTER TABLE public.st_authority ADD CONSTRAINT user_authority_fk FOREIGN KEY (user_id)
+REFERENCES public.climb_user (climb_user_id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 

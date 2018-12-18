@@ -1,27 +1,34 @@
 package uk.co.tatari.climb.domain;
 
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 @Entity
 @Table(name = "wall")
+@NamedEntityGraph(name="Wall.wallDetail", attributeNodes = {@NamedAttributeNode("screwThreads"), @NamedAttributeNode("naturalFeatures")})
 public class Wall implements java.io.Serializable {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(Wall.class);
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -53,6 +60,30 @@ public class Wall implements java.io.Serializable {
     @Column(name = "width_base", columnDefinition = "int")
 	private Integer widthBase;  
     
+    @Column(name = "width_top", columnDefinition = "int")
+	private Integer widthTop;  
+    
+    @Column(name = "height_left", columnDefinition = "int")
+	private Integer heightLeft;  
+    
+    @Column(name = "height_right", columnDefinition = "int")
+	private Integer heightRight; 
+    
+    @Column(name = "z_left", columnDefinition = "int")
+	private Integer zLeft;  
+    
+    @Column(name = "z_right", columnDefinition = "int")
+	private Integer zRight; 
+    
+    @Valid
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "wall")
+    @OrderBy("x")
+    private Set<ScrewThread> screwThreads = new LinkedHashSet<ScrewThread>(0);  
+    
+    @Valid
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "wall")
+    @OrderBy("x")
+    private Set<NaturalFeature> naturalFeatures = new LinkedHashSet<NaturalFeature>(0);    
 	public Wall() {
 		super();
 	}
@@ -112,13 +143,68 @@ public class Wall implements java.io.Serializable {
 		this.description = description;
 	}
 
-
 	public Integer getWidthBase() {
 		return widthBase;
 	}
 
 	public void setWidthBase(Integer widthBase) {
 		this.widthBase = widthBase;
+	}
+
+	public Integer getWidthTop() {
+		return widthTop;
+	}
+
+	public void setWidthTop(Integer widthTop) {
+		this.widthTop = widthTop;
+	}
+
+	public Integer getHeightLeft() {
+		return heightLeft;
+	}
+
+	public void setHeightLeft(Integer heightLeft) {
+		this.heightLeft = heightLeft;
+	}
+
+	public Integer getHeightRight() {
+		return heightRight;
+	}
+
+	public void setHeightRight(Integer heightRight) {
+		this.heightRight = heightRight;
+	}
+
+	public Integer getzLeft() {
+		return zLeft;
+	}
+
+	public void setzLeft(Integer zLeft) {
+		this.zLeft = zLeft;
+	}
+
+	public Integer getzRight() {
+		return zRight;
+	}
+
+	public void setzRight(Integer zRight) {
+		this.zRight = zRight;
+	}
+
+	public Set<ScrewThread> getScrewThreads() {
+		return screwThreads;
+	}
+
+	public void setScrewThreads(Set<ScrewThread> screwThreads) {
+		this.screwThreads = screwThreads;
+	}
+
+	public Set<NaturalFeature> getNaturalFeatures() {
+		return naturalFeatures;
+	}
+
+	public void setNaturalFeatures(Set<NaturalFeature> naturalFeatures) {
+		this.naturalFeatures = naturalFeatures;
 	}
 
 	@Override
@@ -144,5 +230,10 @@ public class Wall implements java.io.Serializable {
 		} else if (!wallId.equals(other.wallId))
 			return false;
 		return true;
+	}
+	
+	public void addScrewThread(ScrewThread screwThread) {
+		
+		screwThreads.add(screwThread);
 	}
 }
