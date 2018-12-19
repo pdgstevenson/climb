@@ -14,7 +14,7 @@
 	<div class="container">
 		<div class="st_formframe">
 		
-			<div class="title">New Centre Details</div>
+			<div class="title">New Room Details</div>
 			<div class="panel-group">
     				<div class="panel panel-default">
       				<div class="panel-heading">
@@ -34,9 +34,10 @@
       				</div>
     				</div>
   			</div>			
-			<form:form role="form" modelAttribute="centre" >
+			<form:form role="form" modelAttribute="room" >
 
-					<tatari:inputField label="Name *" type="text" name="name" placeholder="Enter Climbing Centre name, max 64 chars."/>
+					<tatari:select label="Centre *" name="centre" names="${centres}" itemValue="name" itemLabel="name" showPleaseSelect="false" disabled="true"/>
+					<tatari:inputField label="Name *" type="text" name="name" placeholder="Enter room name, max 64 chars."/>
 
  				<div class="buttondiv"><button type="submit" class="btn btn-default">Submit</button></div>
     			</form:form>

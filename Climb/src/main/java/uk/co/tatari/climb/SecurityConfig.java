@@ -68,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests().antMatchers("/login/**").permitAll().and().formLogin().loginPage("/login").defaultSuccessUrl("/home");
 		http.authorizeRequests().antMatchers("/centre/**").hasRole("USER").and().formLogin().and().logout().logoutSuccessUrl("/login/logout");
-
+		http.authorizeRequests().antMatchers("/home").hasRole("USER").and().formLogin();
 		http.csrf()
 		.csrfTokenRepository(csrfTokenRepository());
 

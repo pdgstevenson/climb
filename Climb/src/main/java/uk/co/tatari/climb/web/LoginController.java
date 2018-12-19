@@ -16,7 +16,7 @@ import uk.co.tatari.climb.repository.UserRepository;
 
 
 @Controller
-public class LoginController {
+public class LoginController  extends BaseController{
 
 	private static final String VIEW_LOGIN_FORM = "login/login";
 

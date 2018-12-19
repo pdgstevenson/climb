@@ -12,7 +12,7 @@
 
 <div class="container">
 	<div class="st_formframe">
-
+		<div class="title">Welcome to the Climb application</div>
     	</div>
 </div>
 <jsp:include page="../fragments/footer.jsp"/>

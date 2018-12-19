@@ -9,10 +9,13 @@
       		<li><a href="<c:url value="/home" />">Climb</a></li>  
       		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Centre<span class="caret"></span></a>
         			<ul class="dropdown-menu">
-        				<li><a href="<c:url value="/centre/new" />">Add New Centre</a></li>          				  			
+        				<li><a href="<c:url value="/centre/new" />">Add New Centre</a></li>
+        				<c:forEach var="climbingCentre" items="${centres}">
+						<li><a href="<c:url value="/centre/${climbingCentre.centreId}" />">${climbingCentre.name}</a></li>
+					</c:forEach>          				  			
         			</ul>
       		</li> 
-
+			<li><a class="w3-bar-item w3-button" href="<c:url value="/register" />">Register</a></li>
       		<li><a href="<c:url value="/login" />"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 
       		<li><a href="<c:url value="/login/logout" />">Logout</a></li> 

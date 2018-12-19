@@ -88,6 +88,11 @@ public class Wall implements java.io.Serializable {
 		super();
 	}
 
+	public Wall(Room room) {
+		super();
+		this.room = room;
+	}
+
 	public Wall(Room room, Integer num, String orientation) {
 		super();
 		this.room = room;

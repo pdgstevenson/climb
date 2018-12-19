@@ -55,6 +55,11 @@ public class Room implements java.io.Serializable {
 		super();
 	}
 
+	public Room(Centre centre) {
+		super();
+		this.centre = centre;
+	}
+
 	public Room(Centre centre, String name) {
 		super();
 		this.centre = centre;
@@ -121,5 +126,10 @@ public class Room implements java.io.Serializable {
 	public void addWall(Wall wall) {
 		
 		walls.add(wall);
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

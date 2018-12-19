@@ -11,20 +11,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 
 /**
@@ -72,7 +67,13 @@ public class UserEntity implements UserDetails  {
 		super();
 	}
 
-
+	public UserEntity(String username, String password, String [] authorityEntityRoles) {
+		super();
+		this.username = username;
+		this.password = password;
+		enabled = true;
+		addRole(new AuthorityEntity(ROLE_USER, this));
+	}
 
 	public String getUsername() {
 		return username;
@@ -127,6 +128,9 @@ public class UserEntity implements UserDetails  {
 		return enabled;
 	}
 	
+	public void addRole(AuthorityEntity ae) {		
+		authorities.add(ae);
+	}
 
 	
 	public AuthorityEntity getAuthorityEntity(String rolename) {	

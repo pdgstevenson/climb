@@ -14,7 +14,7 @@
 	<div class="container">
 		<div class="st_formframe">
 		
-			<div class="title">New Centre Details</div>
+			<div class="title">New ${wall.room.name} Wall Details</div>
 			<div class="panel-group">
     				<div class="panel panel-default">
       				<div class="panel-heading">
@@ -34,10 +34,17 @@
       				</div>
     				</div>
   			</div>			
-			<form:form role="form" modelAttribute="centre" >
+			<form:form role="form" modelAttribute="wall" >
 
-					<tatari:inputField label="Name *" type="text" name="name" placeholder="Enter Climbing Centre name, max 64 chars."/>
-
+					<tatari:inputField label="Name " type="text" name="name" placeholder="Enter wall name, max 32 chars."/>
+					<tatari:inputField label="Number *" type="text" name="num" placeholder="Enter wall order."/>
+					<tatari:inputField label="Orientation *" type="text" name="orientation" placeholder="Enter orientation."/>
+					<tatari:inputField label="Width Base *" type="text" name="widthBase" placeholder="Enter wall order."/>
+					<tatari:inputField label="Width Top *" type="text" name="widthTop" placeholder="Enter wall order."/>
+					<tatari:inputField label="Height Left *" type="text" name="heightLeft" placeholder="Enter wall order."/>
+					<tatari:inputField label="Height Right *" type="text" name="heightRight" placeholder="Enter wall order."/>
+					<tatari:inputField label="Z Left" type="text" name="zLeft" placeholder="Enter wall order."/>
+					<tatari:inputField label="Z Right" type="text" name="zRight" placeholder="Enter wall order."/>
  				<div class="buttondiv"><button type="submit" class="btn btn-default">Submit</button></div>
     			</form:form>
     		</div>
